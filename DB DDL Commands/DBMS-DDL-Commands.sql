@@ -10,6 +10,12 @@ CREATE DATABASE "Ecommerce Store"
     TABLESPACE = pg_default
     CONNECTION LIMIT = -1
     IS_TEMPLATE = False;
+
+CREATE TABLE categories (
+  id SERIAL PRIMARY KEY,
+  img VARCHAR(255) NOT NULL,
+  title VARCHAR(255) NOT NULL
+);
 	
 CREATE TABLE products (
   id SERIAL PRIMARY KEY,
@@ -23,12 +29,6 @@ CREATE TABLE products (
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   category_id INTEGER REFERENCES categories(id)
-);
-
-CREATE TABLE categories (
-  id SERIAL PRIMARY KEY,
-  img VARCHAR(255) NOT NULL,
-  title VARCHAR(255) NOT NULL
 );
 
 CREATE TABLE CategoryProduct (
