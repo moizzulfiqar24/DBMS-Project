@@ -1,5 +1,3 @@
--- Database: Ecommerce Store
-
 CREATE DATABASE "Ecommerce Store"
     WITH
     OWNER = postgres
@@ -56,6 +54,13 @@ CREATE TABLE Users (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE Sellers (
+    id SERIAL PRIMARY KEY,
+    user_id INTEGER UNIQUE REFERENCES Users(id),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE Orders (
   id SERIAL PRIMARY KEY,
   userId VARCHAR(255) NOT NULL,
@@ -67,7 +72,6 @@ CREATE TABLE Orders (
   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-
 CREATE TABLE OrderItem (
   id SERIAL PRIMARY KEY,
   order_id INTEGER REFERENCES Orders(id),
@@ -75,6 +79,25 @@ CREATE TABLE OrderItem (
   users_id INTEGER REFERENCES Users(id)
 );
 
+-- Create Function to Add User to Sellers Table
+CREATE OR REPLACE FUNCTION add_user_to_sellers()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- Check if the added user is an admin
+    IF NEW.isAdmin THEN
+        -- Insert the user into the Sellers table
+        INSERT INTO Sellers (user_id) VALUES (NEW.id);
+    END IF;
+
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+-- Create Trigger to Add User to Sellers Table
+CREATE TRIGGER add_user_to_sellers_trigger
+AFTER INSERT ON Users
+FOR EACH ROW
+EXECUTE FUNCTION add_user_to_sellers();
 
 CREATE OR REPLACE FUNCTION update_product_stock()
 RETURNS TRIGGER AS $$
