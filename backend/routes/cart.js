@@ -1,7 +1,6 @@
 const express = require('express');
 const pool = require('../config/db');
 const { verifyTokenAndAuthorization } = require('../routes/verifyToken');
-const { configureStore } = require('@reduxjs/toolkit');
 
 const router = express.Router();
 
