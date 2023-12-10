@@ -93,7 +93,6 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
--- Create Trigger to Add User to Sellers Table
 CREATE TRIGGER add_user_to_sellers_trigger
 AFTER INSERT ON Users
 FOR EACH ROW
@@ -122,7 +121,6 @@ AFTER INSERT ON Orders
 FOR EACH ROW
 EXECUTE FUNCTION update_product_stock();
 
--- Create a function to populate OrderItem table
 CREATE OR REPLACE FUNCTION populate_order_item()
 RETURNS TRIGGER AS $$
 DECLARE
