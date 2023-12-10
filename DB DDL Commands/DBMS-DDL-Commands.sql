@@ -99,12 +99,6 @@ AFTER INSERT ON Orders
 FOR EACH ROW
 EXECUTE FUNCTION update_product_stock();
 
-
-drop trigger reduce_product_stock on Orders;
-
-select * from products;
-
-
 -- Create a function to populate OrderItem table
 CREATE OR REPLACE FUNCTION populate_order_item()
 RETURNS TRIGGER AS $$
